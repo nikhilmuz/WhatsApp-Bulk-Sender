@@ -29,7 +29,6 @@ public class WASender_Service extends AccessibilityService {
                 for (AccessibilityNodeInfo mNode : sendNode)
                 mNode.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                Toast.makeText(this, ""+sp.getBoolean("sent",false), Toast.LENGTH_SHORT).show();
                 sp.edit().putBoolean("sent", true).commit();
                 Log.e("info","sending");
             }
