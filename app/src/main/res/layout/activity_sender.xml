@@ -15,13 +15,6 @@
         tools:ignore="HardcodedText" />
 
     <Button
-        android:id="@+id/spbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Toggle SP"
-        tools:ignore="HardcodedText" />
-
-    <Button
         android:id="@+id/accbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
