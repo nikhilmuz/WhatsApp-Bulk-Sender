@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">WhatsApp Sender</string>
+    <string name="service_desc">Required to auto send messages</string>
+</resources>
