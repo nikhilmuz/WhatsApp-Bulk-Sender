@@ -22,6 +22,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.opencsv.CSVReader;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.FileReader;
 
 
@@ -38,9 +41,6 @@ public class Sender extends AppCompatActivity {
         sendbtn = findViewById(R.id.sendbtn);
         accbtn = findViewById(R.id.accbtn);
         checkUpdate();
-        setOnClick(browsebtn);
-        setOnClick(sendbtn);
-        setOnClick(accbtn);
     }
     private void setOnClick(View v){
 
@@ -110,10 +110,23 @@ public class Sender extends AppCompatActivity {
 
     private void checkUpdate() {
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
-        StringRequest request = new StringRequest("https://api.nikhilkumar.ga/version/whatsappsender", new Response.Listener<String>() {
+        StringRequest request = new StringRequest("https://api.nikhilkumar.ga/version/whatsappsender/", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(activityContext, "Success :)", Toast.LENGTH_SHORT).show();
+                JSONObject jsonObject;
+                try {
+                    jsonObject = new JSONObject(response);
+                    if (jsonObject.getInt("latest") == 1) {
+                        setOnClick(browsebtn);
+                        setOnClick(sendbtn);
+                        setOnClick(accbtn);
+                    } else {
+                        Toast.makeText(activityContext, "Update to proceed :(", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(activityContext, "Server Error :( Try again later", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -121,6 +134,7 @@ public class Sender extends AppCompatActivity {
                 Toast.makeText(activityContext, "Connectivity Error :(", Toast.LENGTH_SHORT).show();
             }
         });
+        request.setShouldCache(false);
         mRequestQueue.add(request);
 
     }

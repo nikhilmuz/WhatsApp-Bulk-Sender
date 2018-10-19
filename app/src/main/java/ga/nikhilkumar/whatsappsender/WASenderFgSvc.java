@@ -15,6 +15,7 @@ import java.util.List;
 public class WASenderFgSvc extends Service {
 
     private static final int NOTIFICATION_ID = 12;
+    Notification.Builder notificationBuilder;
     SharedPreferences sp;
     Integer progress = 0;
     List<String> recipientList = new ArrayList<>();
@@ -26,14 +27,14 @@ public class WASenderFgSvc extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        notificationBuilder = new Notification.Builder(this);
+        notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
         Boolean start = intent.getBooleanExtra("start", true);
         if (start) {
             sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             progress = 0;
             recipientList.clear();
-            Notification.Builder notificationBuilder = new Notification.Builder(this);
             notificationBuilder.setContentText("Sending Messages");
-            notificationBuilder.setSmallIcon(R.drawable.ic_launcher_foreground);
             Notification not = notificationBuilder.build();
             startForeground(NOTIFICATION_ID, not);
             recipientList.add("918002572171");
@@ -49,9 +50,7 @@ public class WASenderFgSvc extends Service {
         if (progress == recipientList.size()) {
             Toast.makeText(this, "Task Complete", Toast.LENGTH_SHORT).show();
             sp.edit().putBoolean("running", false).commit();
-            Notification.Builder notificationBuilder = new Notification.Builder(this);
             notificationBuilder.setContentText("Sent");
-            notificationBuilder.setSmallIcon(R.drawable.ic_launcher_foreground);
             Notification not = notificationBuilder.build();
             startForeground(NOTIFICATION_ID, not);
             return;
