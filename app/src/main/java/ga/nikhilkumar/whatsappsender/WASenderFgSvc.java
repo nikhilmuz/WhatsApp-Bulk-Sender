@@ -65,7 +65,7 @@ public class WASenderFgSvc extends Service {
 
     @SuppressLint("ApplySharedPref")
     private void send() {
-        if (progress == recipientList.size()) {
+        if (progress >= recipientList.size()) {
             Toast.makeText(this, "Task Complete", Toast.LENGTH_SHORT).show();
             sp.edit().putBoolean("running", false).commit();
             notificationBuilder.setContentText("Sent");
