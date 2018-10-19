@@ -152,6 +152,7 @@ public class Sender extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(activityContext, "Not Permitted :(", Toast.LENGTH_SHORT).show();
+                checkUpdate();
             }
         };
         view.setOnClickListener(onClickListener);
