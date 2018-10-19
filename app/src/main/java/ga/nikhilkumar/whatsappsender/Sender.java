@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -20,15 +19,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.opencsv.CSVReader;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileReader;
-
 
 public class Sender extends AppCompatActivity {
+
+    Uri uri = null;
     SharedPreferences sp;
     Context activityContext = this;
     Button browsebtn, sendbtn, accbtn;
@@ -63,10 +61,15 @@ public class Sender extends AppCompatActivity {
                     @SuppressLint("ApplySharedPref")
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(activityContext, WASenderFgSvc.class);
-                        intent.putExtra("start", true);
-                        sp.edit().putBoolean("running", true).commit();
-                        startService(intent);
+                        if (uri == null) {
+                            Toast.makeText(activityContext, "No file selected :(", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Intent intent = new Intent(activityContext, WASenderFgSvc.class);
+                            intent.putExtra("start", true);
+                            intent.putExtra("uri", uri);
+                            sp.edit().putBoolean("running", true).commit();
+                            startService(intent);
+                        }
                     }
                 });
                 break;
@@ -86,15 +89,8 @@ public class Sender extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 7 && resultCode == Activity.RESULT_OK) {
-            Uri uri = null;
             if (data != null) {
                 uri = data.getData();
-                try {
-                    Log.e("data", new CSVReader(new FileReader(uri.getPath())).readAll().get(0).toString());
-                } catch (java.io.IOException e) {
-                    Toast.makeText(activityContext, "Error", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
             }
         }
     }
@@ -136,6 +132,5 @@ public class Sender extends AppCompatActivity {
         });
         request.setShouldCache(false);
         mRequestQueue.add(request);
-
     }
 }
