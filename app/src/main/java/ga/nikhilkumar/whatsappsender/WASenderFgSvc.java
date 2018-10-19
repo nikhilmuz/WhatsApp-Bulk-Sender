@@ -85,6 +85,4 @@ public class WASenderFgSvc extends Service {
         progress++;
         startActivity(sendIntent);
     }
-
-
 }

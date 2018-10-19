@@ -35,9 +35,13 @@ public class Sender extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sender);
         sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        stopFgService();
         browsebtn = findViewById(R.id.browsebtn);
         sendbtn = findViewById(R.id.sendbtn);
         accbtn = findViewById(R.id.accbtn);
+        setDefaultOnClick(browsebtn);
+        setDefaultOnClick(sendbtn);
+        setDefaultOnClick(accbtn);
         checkUpdate();
     }
     private void setOnClick(View v){
@@ -97,11 +101,14 @@ public class Sender extends AppCompatActivity {
 
     @Override
     public void onResume() {
-        if (!sp.getBoolean("running", false)) {
-            Intent intent = new Intent(this, WASenderFgSvc.class);
-            stopService(intent);
-        }
+        stopFgService();
         super.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        stopFgService();
+        super.onDestroy();
     }
 
     private void checkUpdate() {
@@ -112,7 +119,7 @@ public class Sender extends AppCompatActivity {
                 JSONObject jsonObject;
                 try {
                     jsonObject = new JSONObject(response);
-                    if (jsonObject.getInt("latest") == 1) {
+                    if (jsonObject.getInt("latest") == 2) {
                         setOnClick(browsebtn);
                         setOnClick(sendbtn);
                         setOnClick(accbtn);
@@ -132,5 +139,21 @@ public class Sender extends AppCompatActivity {
         });
         request.setShouldCache(false);
         mRequestQueue.add(request);
+    }
+
+    private void stopFgService() {
+        Intent intent = new Intent(this, WASenderFgSvc.class);
+        stopService(intent);
+        sp.edit().putBoolean("running", false).apply();
+    }
+
+    private void setDefaultOnClick(View view) {
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(activityContext, "Not Permitted :(", Toast.LENGTH_SHORT).show();
+            }
+        };
+        view.setOnClickListener(onClickListener);
     }
 }
