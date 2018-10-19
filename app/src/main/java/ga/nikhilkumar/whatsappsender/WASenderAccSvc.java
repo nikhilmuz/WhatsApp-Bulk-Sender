@@ -4,6 +4,7 @@ import android.accessibilityservice.AccessibilityService;
 import android.content.Intent;
 import android.preference.PreferenceManager;
 import android.view.accessibility.AccessibilityEvent;
+import android.widget.Toast;
 
 import static android.view.accessibility.AccessibilityNodeInfo.ACTION_CLICK;
 
@@ -27,6 +28,7 @@ public class WASenderAccSvc extends AccessibilityService {
 
     @Override
     public void onInterrupt() {
+        Toast.makeText(this, "Please allow accessibility permission to WhatsApp Sender", Toast.LENGTH_SHORT).show();
     }
 
     private void sendNext() {
