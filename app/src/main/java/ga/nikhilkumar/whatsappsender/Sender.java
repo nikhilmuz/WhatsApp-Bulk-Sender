@@ -23,6 +23,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ga.nikhilkumar.whatsappsender.sender.WhatsappApi;
+
 
 public class Sender extends AppCompatActivity {
 
@@ -68,11 +70,21 @@ public class Sender extends AppCompatActivity {
                         if (uri == null) {
                             Toast.makeText(activityContext, "No file selected :(", Toast.LENGTH_SHORT).show();
                         } else {
+                            Toast.makeText(activityContext, "Checking for permissions", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(activityContext, WASenderFgSvc.class);
                             intent.putExtra("start", true);
                             intent.putExtra("uri", uri);
-                            sp.edit().putBoolean("running", true).commit();
-                            startService(intent);
+                            if (WhatsappApi.getInstance().isRootAvailable()) {
+                                Toast.makeText(activityContext, "Root Privileges Detected Switching to advanced mode :)", Toast.LENGTH_SHORT).show();
+                                intent.putExtra("rooted", true);
+                                sp.edit().putBoolean("running", true).commit();
+                                startService(intent);
+                            } else {
+                                Toast.makeText(activityContext, "Oh no root detected continuing with usual privileges :(", Toast.LENGTH_SHORT).show();
+                                intent.putExtra("rooted", false);
+                                sp.edit().putBoolean("running", true).commit();
+                                startService(intent);
+                            }
                         }
                     }
                 });
@@ -103,12 +115,6 @@ public class Sender extends AppCompatActivity {
     public void onResume() {
         stopFgService();
         super.onResume();
-    }
-
-    @Override
-    public void onDestroy() {
-        stopFgService();
-        super.onDestroy();
     }
 
     private void checkUpdate() {
