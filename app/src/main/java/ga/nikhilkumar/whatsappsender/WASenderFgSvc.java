@@ -19,6 +19,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import ga.nikhilkumar.whatsappsender.sender.WhatsappApi;
+import ga.nikhilkumar.whatsappsender.sender.exception.WhatsappNotInstalledException;
+import ga.nikhilkumar.whatsappsender.sender.liseteners.SendMessageListener;
+import ga.nikhilkumar.whatsappsender.sender.model.WContact;
+import ga.nikhilkumar.whatsappsender.sender.model.WMessage;
+
 public class WASenderFgSvc extends Service {
 
     private static final int NOTIFICATION_ID = 12;
@@ -37,6 +43,7 @@ public class WASenderFgSvc extends Service {
         notificationBuilder = new Notification.Builder(this);
         notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
         Boolean start = intent.getBooleanExtra("start", true);
+        Boolean rooted = intent.getBooleanExtra("rooted", false);
         if (start) {
             progress = 0;
             recipientList.clear();
@@ -56,7 +63,31 @@ public class WASenderFgSvc extends Service {
             notificationBuilder.setContentText("Sending Messages");
             Notification not = notificationBuilder.build();
             startForeground(NOTIFICATION_ID, not);
-            send();
+            if (rooted) {
+                List<WContact> wContactList = new ArrayList<>();
+                List<WMessage> wMessageList = new ArrayList<>();
+                for (String[] recepient : recipientList) {
+                    wContactList.add(new WContact(recepient[0], recepient[0] + "@s.whatsapp.net"));
+                    wMessageList.add(new WMessage(recepient[1], null, this));
+                }
+                try {
+                    WhatsappApi.getInstance().sendMessage(wContactList, wMessageList, this, new SendMessageListener() {
+                        @Override
+                        public void finishSendWMessage(List<WContact> contact, List<WMessage> messages) {
+                            Toast.makeText(WASenderFgSvc.this, "Task Completed", Toast.LENGTH_SHORT).show();
+                            sp.edit().putBoolean("running", false).commit();
+                            notificationBuilder.setContentText("Sent");
+                            Notification not = notificationBuilder.build();
+                            startForeground(NOTIFICATION_ID, not);
+                        }
+                    });
+                } catch (WhatsappNotInstalledException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Whatsapp not Installed", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                send();
+            }
         } else {
             send();
         }
@@ -66,7 +97,7 @@ public class WASenderFgSvc extends Service {
     @SuppressLint("ApplySharedPref")
     private void send() {
         if (progress >= recipientList.size()) {
-            Toast.makeText(this, "Task Complete", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Task Completed", Toast.LENGTH_SHORT).show();
             sp.edit().putBoolean("running", false).commit();
             notificationBuilder.setContentText("Sent");
             Notification not = notificationBuilder.build();
