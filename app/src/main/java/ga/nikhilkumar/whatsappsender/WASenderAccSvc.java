@@ -17,10 +17,10 @@ public class WASenderAccSvc extends AccessibilityService {
         }
         if (AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED == event.getEventType()) {
             String actname = event.getClassName().toString();
-            if (actname.equals("com.ga.nikhilkumar.whatsappsender.whatsapp.Conversation")) {
-                getRootInActiveWindow().findAccessibilityNodeInfosByViewId("com.ga.nikhilkumar.whatsappsender.whatsapp.w4b:id/send").get(0).performAction(ACTION_CLICK);
+            if (actname.equals("com.whatsapp.Conversation")) {
+                getRootInActiveWindow().findAccessibilityNodeInfosByViewId("com.whatsapp:id/send").get(0).performAction(ACTION_CLICK);
                 performGlobalAction(GLOBAL_ACTION_BACK);
-            } else if (actname.equals("com.ga.nikhilkumar.whatsappsender.whatsapp.HomeActivity")) {
+            } else if (actname.equals("com.whatsapp.HomeActivity")) {
                 sendNext();
             }
         }

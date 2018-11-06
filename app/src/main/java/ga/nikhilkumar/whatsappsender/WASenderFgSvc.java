@@ -107,7 +107,7 @@ public class WASenderFgSvc extends Service {
         String recipient = recipientList.get(progress)[0];
         String message = recipientList.get(progress)[1];
         Intent sendIntent = new Intent();
-        sendIntent.setPackage("com.whatsapp.w4b");
+        sendIntent.setPackage("com.whatsapp");
         sendIntent.setAction("android.intent.action.SEND");
         sendIntent.setType("text/plain");
         sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
