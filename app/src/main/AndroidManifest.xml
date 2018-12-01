@@ -3,6 +3,7 @@
     package="ga.nikhilkumar.whatsappsender">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <application
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_config"
