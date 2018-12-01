@@ -1,13 +1,20 @@
 package ga.nikhilkumar.whatsappsender;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 import com.opencsv.CSVReader;
@@ -28,7 +35,6 @@ import ga.nikhilkumar.whatsappsender.sender.model.WMessage;
 public class WASenderFgSvc extends Service {
 
     private static final int NOTIFICATION_ID = 12;
-    Notification.Builder notificationBuilder;
     SharedPreferences sp;
     Integer progress = 0;
     List<String[]> recipientList = new ArrayList<>();
@@ -40,8 +46,6 @@ public class WASenderFgSvc extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        notificationBuilder = new Notification.Builder(this);
-        notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
         Boolean start = intent.getBooleanExtra("start", true);
         Boolean rooted = intent.getBooleanExtra("rooted", false);
         if (start) {
@@ -60,9 +64,6 @@ public class WASenderFgSvc extends Service {
                 Toast.makeText(this, "Not a CSV file", Toast.LENGTH_SHORT).show();
             }
             sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            notificationBuilder.setContentText("Sending Messages");
-            Notification not = notificationBuilder.build();
-            startForeground(NOTIFICATION_ID, not);
             if (rooted) {
                 List<WContact> wContactList = new ArrayList<>();
                 List<WMessage> wMessageList = new ArrayList<>();
@@ -72,13 +73,11 @@ public class WASenderFgSvc extends Service {
                 }
                 try {
                     WhatsappApi.getInstance().sendMessage(wContactList, wMessageList, this, new SendMessageListener() {
+                        @SuppressLint("ApplySharedPref")
                         @Override
                         public void finishSendWMessage(List<WContact> contact, List<WMessage> messages) {
                             Toast.makeText(WASenderFgSvc.this, "Task Completed", Toast.LENGTH_SHORT).show();
                             sp.edit().putBoolean("running", false).commit();
-                            notificationBuilder.setContentText("Sent");
-                            Notification not = notificationBuilder.build();
-                            startForeground(NOTIFICATION_ID, not);
                         }
                     });
                 } catch (WhatsappNotInstalledException e) {
@@ -99,9 +98,6 @@ public class WASenderFgSvc extends Service {
         if (progress >= recipientList.size()) {
             Toast.makeText(this, "Task Completed", Toast.LENGTH_SHORT).show();
             sp.edit().putBoolean("running", false).commit();
-            notificationBuilder.setContentText("Sent");
-            Notification not = notificationBuilder.build();
-            startForeground(NOTIFICATION_ID, not);
             return;
         }
         String recipient = recipientList.get(progress)[0];
@@ -115,5 +111,41 @@ public class WASenderFgSvc extends Service {
         sendIntent.putExtra("jid", recipient + "@s.whatsapp.net");
         progress++;
         startActivity(sendIntent);
+    }
+
+    @Override
+    public void onCreate(){
+        super.onCreate();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startMyOwnForeground();
+        }
+        else{
+            Notification.Builder notificationBuilder = new Notification.Builder(this);
+            notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
+            notificationBuilder.setContentText("App Running in Background");
+            Notification not = notificationBuilder.build();
+            startForeground(NOTIFICATION_ID, not);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    private void startMyOwnForeground(){
+        String NOTIFICATION_CHANNEL_ID = "ga.nikhilkumar.whatsappsender";
+        String channelName = "Background Service";
+        NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
+        chan.setLightColor(Color.GREEN);
+        chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        assert manager != null;
+        manager.createNotificationChannel(chan);
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        Notification notification = notificationBuilder.setOngoing(true)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("App Running in Background")
+                .setPriority(NotificationManager.IMPORTANCE_MIN)
+                .setCategory(Notification.CATEGORY_SERVICE)
+                .build();
+        startForeground(NOTIFICATION_ID, notification);
     }
 }
