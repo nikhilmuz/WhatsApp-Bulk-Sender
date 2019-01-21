@@ -12,4 +12,6 @@ To send messages:<br>
 <li>Sit back and relax.</li>
 </ol>
 <br>
-P.S. Add the contacts list on your device and sync it with WhatsApp before sending bulk SMSes on non-rooted phones use any utilities like [Google Contacts](https://contacts.google.com/) for the same in order to import contacts from *.csv. It is recomended for rooted phones also due to WhatsApp policies.
+P.S. Add the contacts list on your device and sync it with WhatsApp before sending bulk SMSes on non-rooted phones use any utilities like [Google Contacts](https://contacts.google.com) for the same in order to import contacts from *.csv. It is recomended for rooted phones also due to WhatsApp policies.<br/>
+<br/>
+<strong>Find sample csv in "samples" folder after cloning the repository</strong>
