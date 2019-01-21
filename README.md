@@ -1,4 +1,5 @@
 # WhatsApp-Bulk-Sender
+<p align="center"> <img src="/samples/tutorial.gif" alt="Tutorial"/> </p><br/>
 Send bulk messages right from your WhatsApp
 
 This application is meant for sending bulk messages through WhatsApp client on Android.<br>
