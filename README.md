@@ -1,4 +1,8 @@
 # WhatsApp-Bulk-Sender
+[![Platform](https://img.shields.io/badge/platform-Android-yellow.svg)](https://www.android.com)
+![GitHub](https://img.shields.io/github/license/nikhilmuz/WhatsApp-Bulk-Sender.svg)
+![Bitcoin](https://img.shields.io/keybase/btc/nikhilkr.svg)
+
 <p align="center"> <img height="500px" src="/samples/tutorial.gif" alt="Tutorial"/> </p><br/>
 Send bulk messages right from your WhatsApp
 
