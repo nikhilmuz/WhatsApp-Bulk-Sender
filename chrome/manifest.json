@@ -1,0 +1,38 @@
+{
+	"manifest_version": 2,
+	"name": "WhatsApp Bulk Sender",
+	"version": "1.0.0",
+	"homepage_url": "https://nikhilkumar.ga",
+	"description": "A chrome Extension to send bulk messages through WhatsApp Web",
+	"icons": {
+		"16": "logo/16.png",
+		"48": "logo/48.png",
+		"128": "logo/128.png"
+	},
+	"browser_action": {
+		"default_title": "WhatsApp Bulk Sender",
+		"default_popup": "html/popup.html"
+	},
+	
+	"background": {
+		"persistent": true,
+		"scripts": ["js/jquery.js", "background.js"]
+	},
+	
+	"author": "Nikhil Kumar",
+	
+	"permissions": [
+		"activeTab",
+		"storage",
+		"webNavigation",
+		"webRequest",
+		"tabs",
+		"https://web.whatsapp.com/*"
+	],
+	
+	"web_accessible_resources": [
+		"js/jquery.js",
+		"js/api.js",
+		"js/whatsapp.js"
+	]
+}
