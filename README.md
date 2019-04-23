@@ -12,7 +12,7 @@ To send messages via WhatsApp Web on Chrome:<br>
 <li>Open chrome browser and navigate to chrome://extensions/.</li>
 <li>Enable <strong>Developer mode</strong> from top right.</li>
 <li>Click "Load unpacked" and browse for chrome folder in this repo.</li>
-<li>Open WhatsApp Web at https://web.whtasapp.com and login.</li>
+<li>Open WhatsApp Web at https://web.whatsapp.com and login.</li>
 <li>Click the extension icon from right side of omnibar on WhatsApp tab and click Upload and browse for json file containing numbers and messages as in folder samples.</li>
 <li>Click on Submit to start sending messages.</li>
 <li>Wait for alert on completion of task.</li>
