@@ -28,6 +28,9 @@ public class WASenderAccSvc extends AccessibilityService {
                 performGlobalAction(GLOBAL_ACTION_BACK);
             } else if (actname.equals("com.whatsapp.HomeActivity")) {
                 sendNext();
+            } else if (actname.equals("com.whatsapp.ContactPicker")) {
+                Toast.makeText(this,"Unable to find contacts in your list! Skipping!!!", Toast.LENGTH_SHORT).show();
+                performGlobalAction(GLOBAL_ACTION_BACK);
             }
         }
     }
