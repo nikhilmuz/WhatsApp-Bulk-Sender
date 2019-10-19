@@ -27,7 +27,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation files('libs/opencsv-3.8.jar')
     implementation 'com.android.volley:volley:1.1.1'
-    implementation 'eu.chainfire:libsuperuser:1.0.0.+'
+    implementation 'eu.chainfire:libsuperuser:1.0.0.201704021214'
     implementation 'org.apache.commons:commons-lang3:3.4'
-    implementation 'commons-io:commons-io:2.4'
+    implementation 'commons-io:commons-io:2.5'
 }
