@@ -7,6 +7,31 @@
     android:orientation="vertical"
     tools:context=".Sender">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose your WhatsApp varient" />
+
+    <RadioGroup
+        android:id="@+id/variantsopt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="100dp">
+
+        <RadioButton
+            android:id="@+id/waradio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WhatsApp" />
+
+        <RadioButton
+            android:id="@+id/wa4bradio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WA Business" />
+    </RadioGroup>
+
     <Button
         android:id="@+id/browsebtn"
         android:layout_width="wrap_content"

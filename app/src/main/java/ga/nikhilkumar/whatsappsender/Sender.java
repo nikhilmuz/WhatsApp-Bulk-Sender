@@ -12,6 +12,7 @@ import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -32,6 +33,7 @@ public class Sender extends AppCompatActivity {
     SharedPreferences sp;
     Context activityContext = this;
     Button browsebtn, sendbtn, accbtn;
+    RadioGroup variantsopt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +43,24 @@ public class Sender extends AppCompatActivity {
         browsebtn = findViewById(R.id.browsebtn);
         sendbtn = findViewById(R.id.sendbtn);
         accbtn = findViewById(R.id.accbtn);
+        variantsopt = findViewById(R.id.variantsopt);
+        switch (sp.getString("variant","com.whatsapp")){
+            case "com.whatsapp":
+                variantsopt.check(R.id.waradio);
+            case "com.whatsapp.w4b":
+                variantsopt.check(R.id.wa4bradio);
+        }
+        variantsopt.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (radioGroup.getCheckedRadioButtonId()){
+                    case R.id.waradio:
+                        sp.edit().putString("variant","com.whatsapp").apply();
+                    case R.id.wa4bradio:
+                        sp.edit().putString("variant","com.whatsapp.w4b").apply();
+                }
+            }
+        });
         setDefaultOnClick(browsebtn);
         setDefaultOnClick(sendbtn);
         setDefaultOnClick(accbtn);
