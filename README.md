@@ -7,9 +7,9 @@ Send bulk messages right from your WhatsApp Android app or WhatsApp Web
 
 This application is meant for sending bulk messages through WhatsApp client on Android or Chrome Web Browser.<br>
 <br>
+To send messages using Android Application:<br>
 <p align="center"> <img height="500px" src="/samples/tutorial.gif" alt="Tutorial"/> </p><br/>
 <br/>
-To send messages using Android Application:<br>
 <ol>
 <li>Open this app and click on "Settings" button to launch Android Setting app so that you may allow accesibility service for this app which is required to auto send messages. If device is rooted (not recommended) there is no need to do same. Directly go to third step.</li>
 <li>Go back to app activity.</li>
@@ -24,7 +24,7 @@ P.S. Add the contacts list on your device and sync it with WhatsApp before sendi
 <br/>
 To send messages via WhatsApp Web on Chrome:<br>
 <br>
-***Deprecated in latest WhatsApp web. Last worked on : 24<sup>th</sup> April, 2019***
+<strong>Deprecated in latest WhatsApp web. Last worked on : 24<sup>th</sup> April, 2019</strong>
 <br>
 <ol>
 <li>Open chrome browser and navigate to chrome://extensions/.</li>
